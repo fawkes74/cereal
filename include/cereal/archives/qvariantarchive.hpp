@@ -795,7 +795,28 @@ CEREAL_REGISTER_ARCHIVE(cereal::QVariantInputArchive)
 CEREAL_REGISTER_ARCHIVE(cereal::QVariantOutputArchive)
 
 // tie input and output archives together
-CEREAL_SETUP_ARCHIVE_TRAITS(cereal::QVariantInputArchive, cereal::QVariantOutputArchive)
+CEREAL_SETUP_ARCHIVE_TRAITS(cereal::QVariantInputArchive, cereal::QVariantOutputArchive);
 
+namespace cereal {
+template <typename T>
+QVariantMap toVariantMap(const T& value) {
+    QVariant var;
+    { cereal::QVariantOutputArchive archive(var); archive(value); }
+    return var.toMap();
+}
+
+template <typename T>
+T fromVariantMap(const QVariantMap& value) {
+    const QVariant var(value);
+    cereal::QVariantInputArchive archive(var);
+    T result;
+    archive(result);
+    return result;
+}
+}
+
+#define REGISTER_QVARIANTMAP_CONVERTERS(T) \
+QMetaType::registerConverter<T,QVariantMap>(&cereal::toVariantMap<T>); \
+QMetaType::registerConverter<QVariantMap,T>(&cereal::fromVariantMap<T>);
 
 #endif // QVARIANTARCHIVE_H
