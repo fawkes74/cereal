@@ -819,4 +819,8 @@ T fromVariantMap(const QVariantMap& value) {
 QMetaType::registerConverter<T,QVariantMap>(&cereal::toVariantMap<T>); \
 QMetaType::registerConverter<QVariantMap,T>(&cereal::fromVariantMap<T>);
 
+#define REGISTER_TRANSIENTMAP_CONVERTERS(T) \
+QMetaType::registerConverter<T,jcon::TransientMap>(&cereal::toVariantMap<T>); \
+QMetaType::registerConverter<jcon::TransientMap,T>(&cereal::fromVariantMap<T>);
+
 #endif // QVARIANTARCHIVE_H
