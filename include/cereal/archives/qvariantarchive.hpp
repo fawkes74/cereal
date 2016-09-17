@@ -297,11 +297,11 @@ namespace cereal
           Iterator() : itsType(Null_) {}
 
           Iterator(MemberIterator begin, MemberIterator end, size_t size) :
-            itsMemberItBegin(begin), itsMemberItEnd(end), itsMemberItCurrent(begin), itsSize(size), itsType(Member)
+            itsMemberItBegin(begin), itsMemberItEnd(end), itsMemberItCurrent(begin), itsType(Member), itsSize(size)
           { }
 
           Iterator(ValueIterator begin, ValueIterator end, size_t size) :
-            itsValueItBegin(begin), itsValueItEnd(end), itsValueItCurrent(begin), itsSize(size), itsType(Value)
+            itsValueItBegin(begin), itsValueItEnd(end), itsValueItCurrent(begin), itsType(Value), itsSize(size)
           { }
 
           //! Advance to the next node
