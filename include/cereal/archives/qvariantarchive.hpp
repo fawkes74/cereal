@@ -416,9 +416,10 @@ namespace cereal
 
       //! Retrieves the current node name
       /*! @return nullptr if no name exists */
-      QString getNodeName() const
+      const char* getNodeName() const
       {
-        return itsIteratorStack.back().name();
+        currentNodeName = itsIteratorStack.back().name().toUtf8();
+        return currentNodeName.constData();
       }
 
       //! Sets the name for the next node created with startNode
@@ -540,6 +541,7 @@ namespace cereal
     private:
       const char * itsNextName;               //!< Next name set by NVP
       std::vector<Iterator> itsIteratorStack; //!< 'Stack' of rapidJSON iterators
+      mutable QByteArray currentNodeName;
 
 };
 
