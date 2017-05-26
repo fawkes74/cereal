@@ -11,6 +11,7 @@
 #include <cstring>
 
 #include <QVariant>
+#include <QString>
 
 namespace cereal
 {
@@ -508,12 +509,21 @@ namespace cereal
       #endif // _MSC_VER
 
     private:
+      #ifdef __ANDROID__
+      //! Convert a string to a long long
+      void stringToNumber( std::string const & str, long long & val ) { val = QString::fromStdString(str).toLongLong(); }
+      //! Convert a string to an unsigned long long
+      void stringToNumber( std::string const & str, unsigned long long & val ) { val = QString::fromStdString(str).toULongLong();}
+      //! Convert a string to a long double
+      void stringToNumber( std::string const & str, long double & val ) { val = QString::fromStdString(str).toDouble(); }
+      #else
       //! Convert a string to a long long
       void stringToNumber( std::string const & str, long long & val ) { val = std::stoll( str ); }
       //! Convert a string to an unsigned long long
       void stringToNumber( std::string const & str, unsigned long long & val ) { val = std::stoull( str ); }
       //! Convert a string to a long double
       void stringToNumber( std::string const & str, long double & val ) { val = std::stold( str ); }
+      #endif
 
     public:
       //! Loads a value from the current node - long double and long long overloads

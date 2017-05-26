@@ -44,6 +44,22 @@
 #include <cereal/details/helpers.hpp>
 #include <cereal/types/base_class.hpp>
 
+#ifdef __ANDROID__
+#include <sstream>
+// Workaround for Android NDK builds (version r10e) that does not support std::to_string and std::strold so far
+namespace std
+{
+template <typename T>
+std::string to_string(T Value)
+{
+    std::ostringstream TempStream;
+    TempStream << Value;
+    return TempStream.str();
+}
+}
+#endif
+
+
 namespace cereal
 {
   // ######################################################################
